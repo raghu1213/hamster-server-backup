@@ -1,0 +1,9 @@
+{
+    "presets": [
+        "es2015",
+        "stage-0",
+        "babel-preset-stage-3",
+        "babel-preset-latest"
+    ]
+    //"plugins": ["syntax-async-functions","transform-regenerator"]
+}
