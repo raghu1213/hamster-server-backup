@@ -7,7 +7,10 @@ var quandlQuery = new QuandlQuery();
 router.get('/fetch/EOD', function (req, res, next) {
 
     var result = quandlQuery.get("EOD", req.query.dataset_code, ".json");
-    res.send(JSON.stringify(result));
+    result.then(function (data) {
+        res.send(data);
+    })
+
 })
 
 module.exports = router;

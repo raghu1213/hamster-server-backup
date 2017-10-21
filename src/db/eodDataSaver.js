@@ -8,13 +8,42 @@ export default class EodDataSaver {
     }
     save(dataset_code) {
         var qQuery = new QuandlQuery()
-        var data = qQuery.get("EOD", dataset_code , ".json")
-        var redisHelper = new RedisHelper();
-        var header = data.dataset.column_names;
-        var keyIdx = header.indexOf("Date")
-        for (let row of data) {
-            redisHelper.insertIntoSortedSet(req.query.dataset_code, DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(row))
-        }
+        var data;
+
+        var eodResultPromise = qQuery.get("EOD", dataset_code);
+
+        // Promise
+        var newDataIsSaved = new Promise(
+            function (resolve, reject) {
+                try {
+                    eodResultPromise.then(function (data) {
+                        var redisHelper = new RedisHelper();
+                        var header = data.dataset.column_names;
+                        var keyIdx = header.indexOf("Date")
+                        var dataArray = data.dataset.data;
+                        for (let row of dataArray) {
+                            redisHelper.insertIntoSortedSet(dataset_code, DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(row))
+                        }
+                        resolve("Success");
+                    });
+
+                }
+                catch (err) {
+                    reject("Error while saving to redis :" + err.message); // reject
+                }
+            });
+
+        return newDataIsSaved;
+        // eodResultPromise.then(function (data) {
+        //     var redisHelper = new RedisHelper();
+        //     var header = data.dataset.column_names;
+        //     var keyIdx = header.indexOf("Date")
+        //     var dataArray = JSON.parse(data);
+        //     for (let row of dataArray) {
+        //         redisHelper.insertIntoSortedSet(req.query.dataset_code, DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(row))
+        //     }
+        // })
+
     }
 
 }
