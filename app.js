@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+var test = require('./routes/test')
 var quandl = require('./routes/quandl');
 var eod = require('./routes/eod');
 var customer = require('./routes/customer');
@@ -31,6 +32,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/test', test);
 app.use('/quandl', quandl);
 app.use('/eod', eod);
 app.use('/customer', customer);
@@ -38,6 +40,7 @@ app.use('/portfolio', portfolio);
 app.use('/questionare', questionare);
 app.use('/rule', rule);
 app.use('/security', security);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
