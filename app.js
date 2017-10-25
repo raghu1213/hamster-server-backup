@@ -6,9 +6,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var quandl = require('./routes/quandl');
-var dataOps = require('./routes/dataOps');
+
 var index = require('./routes/index');
+var quandl = require('./routes/quandl');
+var eod = require('./routes/eod');
+var customer = require('./routes/customer')
+
 
 
 var app = express();
@@ -27,7 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/quandl', quandl);
-app.use('/dataops', dataOps);
+app.use('/eod', eod);
+app.use('/customer', customer)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

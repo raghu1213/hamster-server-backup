@@ -1,0 +1,25 @@
+
+Create customer 
+get gcustomer
+Authenticate customer 
+create portfolio
+
+fetch eod
+fetch my portfolio for customer id
+questionares
+get suggested portfolio for customer id
+
+
+raghu
+deploy redis server to some cloud
+create api for all the above
+Insert 10-15 companies EOD data
+
+Noorul
+    Define questionares
+    Customer table
+
+Anil
+    Ranking and risk profiling 
+        what we need
+        business rules

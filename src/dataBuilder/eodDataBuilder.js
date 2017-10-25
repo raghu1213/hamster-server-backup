@@ -1,5 +1,5 @@
 import QuandlQuery from '../quandl/quandlQuery'
-import RedisHelper from './redis/redisHelper'
+import RedisHelper from '../db/redisHelper'
 var DateFormat = require('dateformat')
 
 
@@ -9,7 +9,7 @@ var DateFormat = require('dateformat')
  * @export
  * @class EodDataSaver
  */
-export default class EodDataOps {
+export default class EodDataBuilder {
     constructor() {
 
     }
