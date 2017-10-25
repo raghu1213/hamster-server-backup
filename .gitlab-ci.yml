@@ -1,0 +1,20 @@
+image: node:8
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - npm install
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - apt-get update -yq
+    - apt-get install rubygems ruby-dev -y
+    - gem install dpl
+    - dpl --provider=heroku --app=hack-2017-poc --api-key=d35932b2-65bb-4ea1-b553-d2a7c4e87f55
