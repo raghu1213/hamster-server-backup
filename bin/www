@@ -5,7 +5,7 @@
  */
 require('babel-register')
 var app = require('../app');
-var debug = require('debug')('quandl2redis:server');
+var debug = require('debug')('Hack2017POC:server');
 var http = require('http');
 
 /**

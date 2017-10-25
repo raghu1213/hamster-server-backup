@@ -10,9 +10,11 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var quandl = require('./routes/quandl');
 var eod = require('./routes/eod');
-var customer = require('./routes/customer')
-
-
+var customer = require('./routes/customer');
+var portfolio = require('./routes/portfolio');
+var questionare = require('./routes/questionare');
+var rule = require('./routes/rule');
+var security = require('./routes/security')
 
 var app = express();
 
@@ -31,7 +33,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/quandl', quandl);
 app.use('/eod', eod);
-app.use('/customer', customer)
+app.use('/customer', customer);
+app.use('/portfolio', portfolio);
+app.use('/questionare', questionare);
+app.use('/rule', rule);
+app.use('/security', security);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
