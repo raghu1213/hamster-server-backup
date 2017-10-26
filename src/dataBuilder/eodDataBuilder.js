@@ -1,5 +1,6 @@
 import QuandlQuery from '../quandl/quandlQuery'
-import RedisHelper from '../db/redisHelper'
+import TimeSeriesData from '../db/sortedSet'
+import KeyValue from '../db/keyValue'
 var DateFormat = require('dateformat')
 
 
@@ -30,16 +31,16 @@ export default class EodDataBuilder {
             function (resolve, reject) {
                 try {
                     eodResultPromise.then(function (data) {
-                        let redisHelper = new RedisHelper();
+                        let tsData = new TimeSeriesData();
+                        let kv = new KeyValue();
                         let header = data.dataset.column_names;
                         let keyIdx = header.indexOf("Date")
                         let dataArray = data.dataset.data;
                         for (let row of dataArray) {
-                            redisHelper.insertIntoSortedSet(dataset_code, DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(row))
+                            tsData.insert(dataset_code + ":EOD:TS:DATA", DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(row))
                         }
-
                         //now set the header as well
-                        redisHelper.SetDataSetHeaders(dataset_code, JSON.stringify(header));
+                        kv.insert(dataset_code + ":EOD:TS:HEADER", JSON.stringify(header));
 
                         resolve("Success");
                     });
@@ -59,11 +60,13 @@ export default class EodDataBuilder {
      * @memberof EodDataOps
      */
     get(dataset_code) {
-        let redisHelper = new RedisHelper();
+        let tsData = new TimeSeriesData();
+        let kv = new KeyValue();
+
         let isDataFetched = new Promise((resolve, reject) => {
             try {
-                redisHelper.getAllFromSortedSet(dataset_code).then(data => {
-                    redisHelper.GetDataSetHeader(dataset_code).then((header => {
+                tsData.get(dataset_code + ":EOD:TS:DATA").then(data => {
+                    kv.get(dataset_code + ":EOD:TS:HEADER").then((header => {
                         resolve({ Header: header, Data: data });
                     }));
                 });

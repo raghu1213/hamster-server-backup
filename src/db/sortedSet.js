@@ -1,0 +1,26 @@
+import Connection from './redisHelper'
+export default class SortedSet {
+    constructor() {
+        this.db = new Connection().RedisDb;
+    }
+
+    get(setName, start, end) {
+        if (start != undefined && end != undefined) {
+            return this.db.zrangebyscore(setName, start, end, "WITHSCORES");
+        }
+        else if (start != undefined && end == undefined) {
+            return this.db.zrangebyscore(setName, valueToFetch, valueToFetch, "WITHSCORES");
+        }
+        let zRange = this.db.zrange(setName, 0, -1);
+        return zRange;
+    }
+
+    insert(setName, key, value) {
+        this.db.zadd(setName, key, value);
+    }
+
+    delete(setName) {
+        this.db.del(setName);
+    }
+
+}
