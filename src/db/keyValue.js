@@ -4,9 +4,8 @@ export default class KeyValue {
         this.db = new Connection().RedisDb;
     }
 
-    get(key) {
-        let set = this.db.get(key);
-        return set;
+     get(key) {
+        return this.db.get(key);
     }
 
     insert(key, value) {
