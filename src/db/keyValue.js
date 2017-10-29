@@ -4,17 +4,26 @@ export default class KeyValue {
         this.db = new Connection().RedisDb;
     }
 
-    get(setName) {
-        let set = this.db.get(setName);
+    get(key) {
+        let set = this.db.get(key);
         return set;
     }
 
-    insert(setName, value) {
-        this.db.set(setName, value);
+    insert(key, value) {
+        this.db.set(key, value);
+        return "Saved"
     }
 
-    delete(setName) {
-        this.db.del(setName);
+    delete(key) {
+        this.db.del(key);
     }
+
+    incr(key) {
+        this.db.incr(key);
+    }
+    decr(key) {
+        this.db.decr(key);
+    }
+
 
 }

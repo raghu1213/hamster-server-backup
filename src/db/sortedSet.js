@@ -15,6 +15,21 @@ export default class SortedSet {
         return zRange;
     }
 
+    getDesc(setName, start, end, limitStart, limitEnd) {
+        if (start != undefined && end != undefined) {
+            return this.db.zrevrangebyscore(setName, start, end, "WITHSCORES");
+        }
+        else if (start != undefined && end == undefined) {
+            return this.db.zrevrangebyscore(setName, valueToFetch, valueToFetch, "WITHSCORES");
+        }
+        else if (limitStart != undefined && limitEnd != undefined) {
+            let zRange = this.db.zrevrange(setName, 0, -1, "LIMIT",limitStart, limitEnd);
+            return zRange;
+        }
+        let zRange = this.db.zrevrange(setName, 0, -1);
+        return zRange;
+    }
+
     insert(setName, key, value) {
         this.db.zadd(setName, key, value);
     }

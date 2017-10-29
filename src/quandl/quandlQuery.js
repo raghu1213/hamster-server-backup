@@ -3,7 +3,7 @@ require('fetch-retry')
 
 export default class QuandlQuery {
     constructor() {
-        this.ApiKey = "?api_key=c-LWekLJ1yK23yk4WXAQ";
+        this.query = "?api_key=c-LWekLJ1yK23yk4WXAQ&start_date=2015-01-01";
     }
 
 
@@ -16,7 +16,7 @@ export default class QuandlQuery {
      * @memberof QuandlQuery
      */
     get(dbCode, dsCode) {
-        var url = "https://www.quandl.com/api/v3/datasets/" + dbCode + '/' + dsCode + '.json' + this.ApiKey;
+        var url = "https://www.quandl.com/api/v3/datasets/" + dbCode + '/' + dsCode + '.json' + this.query;
         return fetch(url, {
             retries: 2,
             retryDelay: 1000,

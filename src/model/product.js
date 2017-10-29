@@ -1,5 +1,6 @@
 export default class Product{
-    constructor(){
+    constructor() {
+        this.ProductId = 0;
         this.ProductName = "";
         this.Country = "";
         this.Sector = "";

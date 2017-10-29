@@ -7,7 +7,7 @@ require('babel-register')
 var app = require('../app');
 var debug = require('debug')('Hack2017POC:server');
 var http = require('http');
-
+require('babel-polyfill')
 /**
  * Get port from environment and store in Express.
  */
