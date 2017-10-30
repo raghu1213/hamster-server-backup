@@ -17,9 +17,10 @@ export default class QuandlQuery {
      */
     get(dbCode, dsCode) {
         var url = "https://www.quandl.com/api/v3/datasets/" + dbCode + '/' + dsCode + '.json' + this.query;
+        console.log('Fetcing from :' + url)
         return fetch(url, {
             retries: 2,
-            retryDelay: 1000,
+            retryDelay: 5000,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

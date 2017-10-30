@@ -5,7 +5,7 @@ export default class List {
     }
 
     get(listName) {
-        let list = this.db.lrange(listname, 0, -1);
+        let list = this.db.lrange(listName, 0, -1);
         return list;
     }
 

@@ -25,16 +25,18 @@ router.post('/insert', async function (req, res, next) {
 
 
 //gets saved data from database
-//e.g. http://localhost:3000/eod/get
-//e.g. http://localhost:3000/eod/get?cif=123
-router.get('/get', async (req, res, next) => {
+//e.g. http://localhost:3000/customer/123
+router.get('/:cif', async (req, res, next) => {
     let data;
-    if (req.query.cif === undefined) {
-        data = await customerBuilder.getCustomers();
-    }
-    else {
-        data =  await customerBuilder.getCustomer(req.query.cif);
-    }
+    data = await customerBuilder.getCustomer(req.params.cif);
+    res.send(JSON.stringify(data));
+});
+
+//gets saved data from database
+//e.g. http://localhost:3000/customer/get
+router.get('/', async (req, res, next) => {
+    let data;
+    data = await customerBuilder.getCustomers();
     res.send(JSON.stringify(data));
 });
 

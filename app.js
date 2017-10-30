@@ -35,7 +35,7 @@ app.use('/', index);
 app.use('/test', test);
 app.use('/quandl', quandl);
 app.use('/eod', eod);
-app.use('/customer', customer);
+app.use('/customers', customer);
 app.use('/portfolio', portfolio);
 app.use('/questionare', questionare);
 app.use('/rule', rule);

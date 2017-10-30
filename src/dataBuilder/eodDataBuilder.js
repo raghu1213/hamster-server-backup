@@ -1,8 +1,11 @@
 import QuandlQuery from '../quandl/quandlQuery'
 import TimeSeriesData from '../db/sortedSet'
 import KeyValue from '../db/keyValue'
+import EodData from '../model/eodData'
 var DateFormat = require('dateformat')
-require('babel-polyfill')
+//require('babel-polyfill')
+
+const EOD_TS_SUFFIX = ":EOD:TS"
 
 /**
  * Class to save EOD data from Quandl
@@ -21,36 +24,40 @@ export default class EodDataBuilder {
      * @returns string message
      * @memberof EodDataSaver
      */
-    save(dataset_code) {
+    async save(dataset_code) {
         let qQuery = new QuandlQuery()
-        let data;
+        let data = await qQuery.get("EOD", dataset_code);
+        _insertData(data);
+        return "Saved"
+    }
 
-        let eodResultPromise = qQuery.get("EOD", dataset_code);
+    _insertData(data) {
+        let tsData = new TimeSeriesData();
+        let kv = new KeyValue();
+        let header = data.dataset.column_names;
+        let keyIdx = header.indexOf("Date");
+        let openIdx = header.indexOf("Open");
+        let highIdx = header.indexOf("High");
+        let lowIdx = header.indexOf("Low");
+        let closeIdx = header.indexOf("Close");
+        let volumeIdx = header.indexOf("Volume");
+        let dividentIdx = header.indexOf("Divident");
+        let splitIdx = header.indexOf("Split");
 
-        let newDataIsSaved = new Promise(
-            function (resolve, reject) {
-                try {
-                    eodResultPromise.then(function (data) {
-                        let tsData = new TimeSeriesData();
-                        let kv = new KeyValue();
-                        let header = data.dataset.column_names;
-                        let keyIdx = header.indexOf("Date")
-                        let dataArray = data.dataset.data;
-                        for (let row of dataArray) {
-                            tsData.insert(dataset_code + ":EOD:TS:DATA", DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(row))
-                        }
-                        //now set the header as well
-                        kv.insert(dataset_code + ":EOD:TS:HEADER", JSON.stringify(header));
+        let dataArray = data.dataset.data;
+        for (let row of dataArray) {
+            let eodData = new EodData(
+                row[keyIdx],
+                row[openIdx],
+                row[highIdx],
+                row[lowIdx],
+                row[closeIdx],
+                row[volumeIdx],
+                ow[dividentIdx],
+                row[splitIdx]);
 
-                        resolve("Success");
-                    });
-
-                }
-                catch (err) {
-                    reject("Error while saving to redis :" + err.message); // reject
-                }
-            });
-        return newDataIsSaved;
+            tsData.insert(dataset_code + EOD_TS_SUFFIX, DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(eodData))
+        }
     }
 
 
@@ -59,23 +66,11 @@ export default class EodDataBuilder {
      * @returns Json results
      * @memberof EodDataOps
      */
-    get(dataset_code) {
+    async get(dataset_code) {
         let tsData = new TimeSeriesData();
         let kv = new KeyValue();
-
-        let isDataFetched = new Promise((resolve, reject) => {
-            try {
-                tsData.get(dataset_code + ":EOD:TS:DATA").then(data => {
-                    kv.get(dataset_code + ":EOD:TS:HEADER").then((header => {
-                        resolve({ Header: header, Data: data });
-                    }));
-                });
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
-        return isDataFetched;
+        let data = await tsData.get(dataset_code + EOD_TS_SUFFIX);
+        return data;
     }
 }
 
