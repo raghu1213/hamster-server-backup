@@ -1,0 +1,9 @@
+Risk Reward Score Only  
+https://www.etfg.com/research/quote-ratings/TTAC
+
+Overall info risk,reqrd, meta data, performance, sector exposure 
+https://www.etfg.com/research/quote-stats/TTAC
+
+Top 100 etfs:
+https://www.etfg.com/research/quant-rankings/etfg-100/json?_=1509414918958
+https://www.etfg.com/research/quant-rankings/fund-100/json?_=1509414435920
