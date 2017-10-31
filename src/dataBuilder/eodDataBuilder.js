@@ -26,12 +26,12 @@ export default class EodDataBuilder {
      */
     async save(dataset_code) {
         let qQuery = new QuandlQuery()
-        let data = await qQuery.get("EOD", dataset_code);
-        _insertData(data);
+        let data = await qQuery.get("WIKI", dataset_code);
+        this._insertData(data,dataset_code);
         return "Saved"
     }
 
-    _insertData(data) {
+    _insertData(data,dataset_code) {
         let tsData = new TimeSeriesData();
         let kv = new KeyValue();
         let header = data.dataset.column_names;
@@ -53,7 +53,7 @@ export default class EodDataBuilder {
                 row[lowIdx],
                 row[closeIdx],
                 row[volumeIdx],
-                ow[dividentIdx],
+                row[dividentIdx],
                 row[splitIdx]);
 
             tsData.insert(dataset_code + EOD_TS_SUFFIX, DateFormat(row[keyIdx], "yyyymmdd"), JSON.stringify(eodData))
