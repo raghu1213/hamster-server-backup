@@ -1,9 +1,8 @@
-Risk Reward Score Only  
-https://www.etfg.com/research/quote-ratings/TTAC
+Select top 100 etfs from here
+https://www.etfg.com/research/quant-rankings/etfg-100/json?_=1509414918958
+
+Then for each ticker from the above, get the full etf info using the below url
 
 Overall info risk,reqrd, meta data, performance, sector exposure 
 https://www.etfg.com/research/quote-stats/TTAC
 
-Top 100 etfs:
-https://www.etfg.com/research/quant-rankings/etfg-100/json?_=1509414918958
-https://www.etfg.com/research/quant-rankings/fund-100/json?_=1509414435920
